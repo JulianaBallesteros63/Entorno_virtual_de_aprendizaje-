@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 
-# 🔐 LOGIN con correo
+# 🔐 LOGIN
 def iniciar_sesion(request):
     if request.method == 'POST':
         correo = request.POST.get('correo')
@@ -17,14 +17,18 @@ def iniciar_sesion(request):
             user_obj = User.objects.get(email=correo)
             user = authenticate(request, username=user_obj.username, password=password)
 
-            if user is not None:
+            if user:
                 login(request, user)
-                return redirect('/')
+                return redirect('/inicio/')  # 👈 CAMBIO CLAVE
             else:
-                return render(request, 'login.html', {'error': 'Contraseña incorrecta'})
-        
+                return render(request, 'login.html', {
+                    'error': 'Contraseña incorrecta'
+                })
+
         except User.DoesNotExist:
-            return render(request, 'login.html', {'error': 'Correo no registrado'})
+            return render(request, 'login.html', {
+                'error': 'Correo no registrado'
+            })
 
     return render(request, 'login.html')
 
@@ -44,30 +48,36 @@ def registro(request):
 
         if User.objects.filter(email=correo).exists():
             return render(request, 'registro.html', {
-                'error': 'El correo ya está registrado'
+                'error': 'El correo ya existe'
             })
 
-        user = User.objects.create_user(
-            username=correo,   # usamos correo como username
+        User.objects.create_user(
+            username=correo,
             email=correo,
             password=password,
             first_name=nombre
         )
 
-        login(request, user)
-        return redirect('/')
+        return redirect('/login/')
 
     return render(request, 'registro.html')
 
 
-# 📋 LISTA (protegida)
+# 🏠 INICIO (PÁGINA EVA)
+@login_required(login_url='/login/')
+def inicio(request):
+    return render(request, 'inicio.html')
+
+
+# 📋 LISTA (PROTEGIDA)
 @login_required(login_url='/login/')
 def lista_estudiantes(request):
     estudiantes = Estudiante.objects.all()
     return render(request, 'lista.html', {'estudiantes': estudiantes})
 
 
-# ➕ AGREGAR
+# ➕ AGREGAR (PROTEGIDO)
+@login_required(login_url='/login/')
 def agregar_estudiante(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
@@ -86,7 +96,8 @@ def agregar_estudiante(request):
     return render(request, 'agregar.html')
 
 
-# ❌ ELIMINAR
+
+@login_required(login_url='/login/')
 def eliminar_estudiante(request, id):
     estudiante = get_object_or_404(Estudiante, id=id)
     estudiante.delete()
