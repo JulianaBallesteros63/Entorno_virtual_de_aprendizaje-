@@ -94,7 +94,7 @@ python manage.py runserver
 
 Abrir en el navegador:
 
-http://127.0.0.1:8000/
+ http://127.0.0.1:8000/
 
 ## Funcionalidades
 
