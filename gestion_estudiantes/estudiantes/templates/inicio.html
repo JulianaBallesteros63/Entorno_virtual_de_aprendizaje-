@@ -1,73 +1,217 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio EVA</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #8fb3c5;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #6f9fb8;
+        }
+
+        .titulo {
+            color: #173b50;
+            font-weight: bold;
+        }
+
+        .modulo {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.2s;
+        }
+
+        .modulo:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: white;
+            padding: 12px;
+        }
+
+        .btn-modulo {
+            background-color: #105b64;
+            color: white;
+            border: none;
+        }
+
+        .btn-modulo:hover {
+            background-color: #08444b;
+            color: white;
+        }
+    </style>
 </head>
 
-<body style="background-color:#8fb3c5;">
+<body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg" style="background-color:#6f9fb8;">
-  <div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">EVA</a>
+<!-- BARRA DE NAVEGACIÓN -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'inicio' %}">EVA</a>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link text-white" href="#">Recursos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="#">Cursos</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-dark" href="/logout/">Salir</a>
-        </li>
-      </ul>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menu">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#modulos">Recursos didácticos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#modulos">Mis módulos</a>
+                </li>
+                <li class="nav-item ms-lg-3">
+                    <a class="btn btn-dark" href="{% url 'logout' %}">
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
-<!-- CONTENIDO -->
-<div class="container mt-4">
+<!-- CONTENIDO PRINCIPAL -->
+<main class="container py-5">
 
-    <h5>Hola, {{ request.user.first_name }} 👋</h5>
+    <h5>¡Hola, {{ request.user.first_name }}! 👋</h5>
 
-    <h2 class="mt-3">SENSORES HIDRICOS</h2>
-    <p>Vista previa de los módulos.</p>
+    <h1 class="titulo mt-3">SENSORES HÍDRICOS</h1>
 
-    <div class="row mt-4">
+    <p class="fs-5">
+        Aprende sobre las herramientas tecnológicas utilizadas
+        para analizar las características del agua.
+    </p>
 
-        <!-- TARJETA 1 -->
-        <div class="col-md-4">
-            <div class="card p-3">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Arduino_Logo.svg" class="img-fluid">
-                <h5 class="mt-2">Arduino</h5>
-                <p>Plataforma de desarrollo</p>
+    <section id="modulos" class="mt-4">
+        <h2 class="titulo">Módulos de aprendizaje</h2>
+        <p>Selecciona un módulo para comenzar a aprender.</p>
+
+        <div class="row g-4 mt-2">
+
+            <!-- MÓDULO 1: ARDUINO -->
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card modulo shadow-sm">
+                    <img src="{% static 'imagenes/arduino.jpg' %}"
+                         class="card-img-top"
+                         alt="Placa Arduino">
+
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h4">Arduino</h3>
+                        <p>
+                            Conoce la plataforma Arduino y su utilidad
+                            en proyectos de electrónica y sensores.
+                        </p>
+                        <a href="{% url 'arduino' %}"
+                            class="btn btn-modulo mt-auto">
+                            Explorar módulo
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- TARJETA 2 -->
-        <div class="col-md-4">
-            <div class="card p-3">
-                <img src="https://cdn.sparkfun.com/assets/parts/1/1/0/1/0/14669-pH_Sensor_Kit.jpg" class="img-fluid">
-                <h5 class="mt-2">Sensor de pH</h5>
-                <p>Mide nivel de acidez</p>
+            <!-- MÓDULO 2: SENSOR DE pH -->
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card modulo shadow-sm">
+                    <img src="{% static 'imagenes/sensor_ph.jpg' %}"
+                         class="card-img-top"
+                         alt="Sensor de pH para agua">
+
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h4">Sensor de pH</h3>
+                        <p>
+                            Aprende cómo identificar el nivel de acidez
+                            o alcalinidad del agua.
+                        </p>
+                        <a href="{% url 'ph' %}"
+                           class="btn btn-modulo mt-auto">
+                            Explorar módulo
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- TARJETA 3 -->
-        <div class="col-md-4">
-            <div class="card p-3">
-                <img src="https://m.media-amazon.com/images/I/61z6F8U5YlL.jpg" class="img-fluid">
-                <h5 class="mt-2">Sensor de temperatura</h5>
-                <p>Control térmico</p>
+            <!-- MÓDULO 3: TEMPERATURA -->
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card modulo shadow-sm">
+                    <img src="{% static 'imagenes/sensor_temperatura.jpg' %}"
+                         class="card-img-top"
+                         alt="Sensor de temperatura">
+
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h4">Sensor de temperatura</h3>
+                        <p>
+                            Comprende cómo medir la temperatura del
+                            agua y por qué es importante.
+                        </p>
+                        <a href="{% url 'temperatura' %}"
+                           class="btn btn-modulo mt-auto">
+                            Explorar módulo
+                        </a>
+                    </div>
+                </div>
             </div>
+
+            <!-- MÓDULO 4: TURBIDEZ -->
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card modulo shadow-sm">
+                    <img src="{% static 'imagenes/sensor_turbidez.jpg' %}"
+                         class="card-img-top"
+                         alt="Sensor de turbidez del agua">
+
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h4">Turbidez del agua</h3>
+                        <p>
+                            Explora cómo se mide la claridad del agua
+                            y qué puede indicar su turbidez.
+                        </p>
+                        <a href="{% url 'turbidez' %}"
+                           class="btn btn-modulo mt-auto">
+                            Explorar módulo
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓDULO 5: EVALUACIÓN -->
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card modulo shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <div class="text-center display-3 mb-3">📝</div>
+                        <h3 class="h4">Actividades y evaluación</h3>
+                        <p>
+                            Pon a prueba tus conocimientos sobre
+                            Arduino y los sensores hídricos.
+                        </p>
+                        <a href="{% url 'evaluacion' %}"
+                           class="btn btn-modulo mt-auto">
+                            Comenzar evaluación
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </section>
+</main>
 
-    </div>
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

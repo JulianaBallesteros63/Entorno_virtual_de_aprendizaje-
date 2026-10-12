@@ -102,3 +102,32 @@ def eliminar_estudiante(request, id):
     estudiante = get_object_or_404(Estudiante, id=id)
     estudiante.delete()
     return redirect('/')
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+
+@login_required(login_url='/login/')
+def modulo_arduino(request):
+    return render(request, 'arduino.html')
+
+
+@login_required(login_url='/login/')
+def modulo_ph(request):
+    return render(request, 'ph.html')
+
+
+@login_required(login_url='/login/')
+def modulo_temperatura(request):
+    return render(request, 'temperatura.html')
+
+
+@login_required(login_url='/login/')
+def modulo_turbidez(request):
+    return render(request, 'turbidez.html')
+
+
+@login_required(login_url='/login/')
+def modulo_evaluacion(request):
+    return render(request, 'evaluacion.html')
